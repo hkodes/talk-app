@@ -2,6 +2,7 @@ import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:talkapp/commonWidgets/giftModal.dart';
 import 'package:talkapp/constants.dart';
 import 'package:talkapp/screens/home/widgets/postDetail.dart';
 import '../../data.dart';
@@ -15,7 +16,6 @@ class Cards extends StatefulWidget {
 
 class _CardsState extends State<Cards> {
   final AppinioSwiperController controller = AppinioSwiperController();
-
   List<ExampleCard> cards = [];
 
   @override
@@ -29,6 +29,7 @@ class _CardsState extends State<Cards> {
       cards.add(
         ExampleCard(
           candidate: user,
+          profile: false,
         ),
       );
     }
@@ -113,19 +114,24 @@ class _CardsState extends State<Cards> {
                     ],
                   ),
                 ),
-                Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            colors: [Colors.red, Colors.purple]),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Center(
-                      child: Icon(
-                        Icons.wallet_giftcard,
-                        color: Colors.white.withOpacity(0.8),
-                      ),
-                    ))
+                InkWell(
+                  onTap: () {
+                    giftPopUp(context);
+                  },
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                              colors: [Colors.red, Colors.purple]),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Center(
+                        child: Icon(
+                          Icons.wallet_giftcard,
+                          color: Colors.white.withOpacity(0.8),
+                        ),
+                      )),
+                ),
               ],
             ),
           ),
@@ -137,11 +143,10 @@ class _CardsState extends State<Cards> {
 
 class ExampleCard extends StatelessWidget {
   final UserModel candidate;
+  final bool profile;
 
-  const ExampleCard({
-    Key? key,
-    required this.candidate,
-  }) : super(key: key);
+  ExampleCard({Key? key, required this.candidate, required this.profile})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -160,36 +165,45 @@ class ExampleCard extends StatelessWidget {
         alignment: Alignment.center,
         child: ListView(
           children: [
+            profile!
+                ? SizedBox(
+                    height: 15,
+                  )
+                : Container(),
             Row(
               children: [
                 const SizedBox(
                   width: 20,
                 ),
-                Image.asset(
-                  candidate.image!,
-                  height: 60,
-                ),
+                profile!
+                    ? Container()
+                    : Image.asset(
+                        candidate.image!,
+                        height: 60,
+                      ),
                 const SizedBox(
                   width: 20,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      candidate.name!,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Flag.fromCode(
-                      FlagsCode.US,
-                      height: 20,
-                      width: 30,
-                      fit: BoxFit.fill,
-                    ),
-                  ],
-                ),
+                profile!
+                    ? Container()
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            candidate.name!,
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Flag.fromCode(
+                            FlagsCode.US,
+                            height: 20,
+                            width: 30,
+                            fit: BoxFit.fill,
+                          ),
+                        ],
+                      ),
                 const Spacer(),
                 Padding(
                   padding: EdgeInsets.only(right: 15),
@@ -208,6 +222,47 @@ class ExampleCard extends StatelessWidget {
               child: Text(
                 candidate.content!,
                 style: const TextStyle(color: Colors.white, fontSize: 17),
+              ),
+            ),
+            const SizedBox(
+              height: 70,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.wallet_giftcard,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        candidate.gift.toString(),
+                        style: kBodyText,
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.message,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        candidate.messages.toString(),
+                        style: kBodyText,
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
           ],

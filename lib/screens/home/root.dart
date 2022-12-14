@@ -5,7 +5,7 @@ import 'package:talkapp/constants.dart';
 import 'package:talkapp/screens/chats/chat.dart';
 import 'package:talkapp/screens/explore/explore.dart';
 import 'package:talkapp/screens/home/home.dart';
-import 'package:talkapp/screens/home/profile.dart';
+import 'package:talkapp/screens/profile/profile.dart';
 import 'package:talkapp/screens/post/postTopic.dart';
 
 class Root extends StatefulWidget {
@@ -88,7 +88,7 @@ class _RootState extends State<Root> {
             key: _page3,
             onGenerateRoute: (route) => CupertinoPageRoute(
               settings: route,
-              builder: (context) => ChatPage(),
+              builder: (context) => Chats(),
             ),
           ),
           Navigator(
